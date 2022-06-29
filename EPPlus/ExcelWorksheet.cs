@@ -1491,7 +1491,7 @@ namespace OfficeOpenXml
                 var content = xr.ReadElementContentAsString();
                 int ix;
 
-                // if the shared string index isn't present or is a valid number
+                // if the shared string index isn't present or is not a valid number
                 // then just use the content
                 if (!int.TryParse(content, out ix))
                 {
