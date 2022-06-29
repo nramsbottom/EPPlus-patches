@@ -1488,11 +1488,22 @@ namespace OfficeOpenXml
             //if (vnode == null) return null;
             if (type == "s")
             {
-                int ix = xr.ReadElementContentAsInt();
-                SetValueInner(row, col, _package.Workbook._sharedStringsList[ix].Text);
-                if (_package.Workbook._sharedStringsList[ix].isRichText)
+                var content = xr.ReadElementContentAsString();
+                int ix;
+
+                // if the shared string index isn't present or is a valid number
+                // then just use the content
+                if (!int.TryParse(content, out ix))
                 {
-                    _flags.SetFlagValue(row, col, true, CellFlags.RichText);
+                    SetValueInner(row, col, content);
+                }
+                else
+                {
+                    SetValueInner(row, col, _package.Workbook._sharedStringsList[ix].Text);
+                    if (_package.Workbook._sharedStringsList[ix].isRichText)
+                    {
+                        _flags.SetFlagValue(row, col, true, CellFlags.RichText);
+                    }
                 }
             }
             else if (type == "str")
